@@ -42,3 +42,4 @@ Impresiones:
 Este proyecto lo tome de un modo personal, ya que fue algo que quise hacer por mis propios medios para descubrir en mi misma lo que soy capaz de hacer y aunque me tomo tiempo, me siento satisfecha con el resultado, siento que logre el objetivo tanto educativo como personal.
 Creo que el nivel de dificultad del proyecto fue el apropiado para lo visto durante el curso por lo que puedo dar fe de mi conocimiento y de que voy en una buena direccion.
 
+
