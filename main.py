@@ -64,10 +64,10 @@ class UrbanRoutesPage:
     driver_message = (By.XPATH, '//*[@id="comment"]')
     write_message = (By.CSS_SELECTOR, "#comment")
     requests_button = (By.CLASS_NAME, "reqs-head")
-
     blanket_and_scarves = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
     ice_cream_counter = (By.CLASS_NAME, "counter-plus")
     taxi_search_button = (By.CLASS_NAME, "smart-button-main")
+
     modal_taxi = (By.CLASS_NAME, " order - header - title")
 
     def __init__(self, driver):
@@ -168,8 +168,6 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.card_cvv).send_keys(data.card_code)
 
     def cvv_code(self):
-        #self.driver.implicitly_wait(20)
-        #self.cvv_add()
         self.driver.implicitly_wait(20)
         self.code_card_input()
 
@@ -207,9 +205,9 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.taxi_search_button).click()
 
     def wait_for_driver_info(self):
-        WebDriverWait(self.driver, 30).until(
-            expected_conditions.visibility_of_element_located(self.modal_taxi)
-        )
+        self.driver.implicitly_wait(40)
+        self.driver.find_element(*self.modal_taxi)
+        self.driver.implicitly_wait(40)
 
 
 class TestUrbanRoutes:
@@ -287,6 +285,7 @@ class TestUrbanRoutes:
         routes_page.search_taxi()
 
         # Esperar a que aparezca la información del conductor en el modal
+        time.sleep(40)
         routes_page.wait_for_driver_info()
 
     @classmethod
