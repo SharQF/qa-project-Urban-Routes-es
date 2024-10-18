@@ -67,7 +67,6 @@ class UrbanRoutesPage:
     blanket_and_scarves = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
     ice_cream_counter = (By.CLASS_NAME, "counter-plus")
     taxi_search_button = (By.CLASS_NAME, "smart-button-main")
-
     modal_taxi = (By.CLASS_NAME, " order - header - title")
 
     def __init__(self, driver):
