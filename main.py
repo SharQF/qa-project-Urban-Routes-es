@@ -1,6 +1,5 @@
 import time
 
-import driver
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
@@ -204,9 +203,9 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.taxi_search_button).click()
 
     def wait_for_driver_info(self):
-        self.driver.implicitly_wait(40)
+        self.driver.implicitly_wait(50)
         self.driver.find_element(*self.modal_taxi)
-        self.driver.implicitly_wait(40)
+        self.driver.implicitly_wait(50)
 
 
 class TestUrbanRoutes:
@@ -254,28 +253,32 @@ class TestUrbanRoutes:
         assert routes_page.get_phone() == phone_number
 
         # Recuperar el código de confirmación del teléfono
-        time.sleep(20)
+        self.driver.implicitly_wait(30)
         routes_page.the_next_button()
-        time.sleep(20)
+        self.driver.implicitly_wait(30)
         routes_page.code_number()
-        time.sleep(20)
+        self.driver.implicitly_wait(30)
         routes_page.send_cell_info()
+        self.driver.implicitly_wait(30)
 
         # Agregar una tarjeta de crédito
-        time.sleep(10)
+        self.driver.implicitly_wait(20)
         routes_page.click_card()
-        time.sleep(30)
+        self.driver.implicitly_wait(20)
         routes_page.add_card()
-        time.sleep(30)
+        self.driver.implicitly_wait(20)
         routes_page.close_window()
+        assert routes_page.add_card() == data.card_number  #Agregar asserts
 
         # Escribir un mensaje para el controlador
         message = data.message_for_driver
         routes_page.write_drive_message(message)
+        assert routes_page.write_drive_message() == data.message_for_driver #agregar assert
 
         # Pedir una manta y pañuelos
-        time.sleep(30)
+        self.driver.implicitly_wait(20)
         routes_page.request_blanket_and_tissues()
+        assert routes_page.request_blanket_and_tissues() ==
 
         # Pedir 2 helados
         routes_page.request_ice_cream()
@@ -284,7 +287,7 @@ class TestUrbanRoutes:
         routes_page.search_taxi()
 
         # Esperar a que aparezca la información del conductor en el modal
-        time.sleep(40)
+        self.driver.implicitly_wait(50)
         routes_page.wait_for_driver_info()
 
     @classmethod
