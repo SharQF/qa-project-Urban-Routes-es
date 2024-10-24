@@ -66,7 +66,7 @@ class UrbanRoutesPage:
     blanket_and_scarves = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
     ice_cream_counter = (By.CLASS_NAME, "counter-plus")
     taxi_search_button = (By.CLASS_NAME, "smart-button-main")
-    modal_taxi = (By.CLASS_NAME, " order - header - title")
+    modal_taxi = (By.CLASS_NAME, " order - header - title")  # cambiar a Class name
 
     def __init__(self, driver):
         self.driver = driver
@@ -129,6 +129,9 @@ class UrbanRoutesPage:
         self.driver.implicitly_wait(20)
         self.driver.find_element(*self.code).send_keys(phone_code)
 
+    def get_code(self):
+        return self.driver.find_element(*self.code).get_property('value')
+
     def pay_click(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element(*self.payment_method).click()
@@ -157,6 +160,9 @@ class UrbanRoutesPage:
         self.driver.implicitly_wait(20)
         self.number_input()
 
+    def get_card_input(self):
+        return self.driver.find_element(*self.add_credit_card).get_property('value')
+
     def cvv_add(self):
         self.driver.implicitly_wait(30)
         self.driver.find_element(*self.card_cvv).click()
@@ -168,6 +174,9 @@ class UrbanRoutesPage:
     def cvv_code(self):
         self.driver.implicitly_wait(20)
         self.code_card_input()
+
+    def get_cvv_card(self):
+        return self.driver.find_element(*self.card_cvv).get_property('value')
 
     def registered_card(self):
         self.driver.implicitly_wait(30)
@@ -190,22 +199,34 @@ class UrbanRoutesPage:
         message_field = self.driver.find_element(*self.driver_message)
         message_field.send_keys(message)
 
+    def get_message(self):
+        return self.driver.find_element(*self.driver_message).get_property('value')
+
     def request_blanket_and_tissues(self):
         self.driver.implicitly_wait(20)
         self.driver.find_element(*self.blanket_and_scarves).click()
+
+    def get_blanket_and_scarves(self):
+        return self.driver.find_element(*self.blanket_and_scarves).get_property('value')
 
     def request_ice_cream(self):
         self.driver.implicitly_wait(20)
         self.driver.find_element(*self.ice_cream_counter).click()
         self.driver.find_element(*self.ice_cream_counter).click()
 
+    def get_ice_cream(self):
+        return self.driver.find_element(*self.ice_cream_counter).get_property('value')
+
     def search_taxi(self):
         self.driver.find_element(*self.taxi_search_button).click()
 
+    def get_taxi(self):
+        return self.driver.find_element(*self.taxi_search_button).get_property('value')
+
     def wait_for_driver_info(self):
-        self.driver.implicitly_wait(50)
+        self.driver.implicitly_wait(120)
         self.driver.find_element(*self.modal_taxi)
-        self.driver.implicitly_wait(50)
+        self.driver.implicitly_wait(120)
 
 
 class TestUrbanRoutes:
@@ -235,7 +256,7 @@ class TestUrbanRoutes:
         # Configurar la dirección
         address_from = data.address_from
         address_to = data.address_to
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(10)  # cambio del timeslep
         routes_page.set_route(address_from, address_to)
         assert routes_page.get_from() == address_from
         assert routes_page.get_to() == address_to
@@ -248,47 +269,51 @@ class TestUrbanRoutes:
 
         # Rellenar el número de teléfono
         phone_number = data.phone_number
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(10)  # cambio del timeslep
         routes_page.set_phone()
         assert routes_page.get_phone() == phone_number
 
         # Recuperar el código de confirmación del teléfono
-        self.driver.implicitly_wait(30)
         routes_page.the_next_button()
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(30)  # cambio del timeslep
         routes_page.code_number()
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(30)  # cambio del timeslep
         routes_page.send_cell_info()
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(50)  # cambio del timeslep
 
         # Agregar una tarjeta de crédito
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.click_card()
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(20) # cambio del timeslep
         routes_page.add_card()
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.close_window()
-        assert routes_page.add_card() == data.card_number  #Agregar asserts
+        assert routes_page.get_card_input() == data.card_number  # agregar asserts
+        assert routes_page.get_cvv_card() == data.card_code      # agregar asserts
 
         # Escribir un mensaje para el controlador
         message = data.message_for_driver
         routes_page.write_drive_message(message)
-        assert routes_page.write_drive_message() == data.message_for_driver #agregar assert
+        assert routes_page.get_message() == data.message_for_driver  # agregar assert
 
         # Pedir una manta y pañuelos
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.request_blanket_and_tissues()
-        assert routes_page.request_blanket_and_tissues() ==
+        assert routes_page.get_blanket_and_scarves() == routes_page.request_blanket_and_tissues()  # agregar assert
 
         # Pedir 2 helados
+        self.driver.implicitly_wait(20) # cambio del timeslep
         routes_page.request_ice_cream()
+        assert routes_page.get_ice_cream() == routes_page.request_ice_cream()  # agregar Assert
 
         # Buscar un taxi
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.search_taxi()
 
         # Esperar a que aparezca la información del conductor en el modal
-        self.driver.implicitly_wait(50)
+        self.driver.implicitly_wait(120) # aumentar tiempo
         routes_page.wait_for_driver_info()
+        self.driver.implicitly_wait(120)
 
     @classmethod
     def teardown_class(cls):
