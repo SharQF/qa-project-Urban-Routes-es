@@ -66,7 +66,7 @@ class UrbanRoutesPage:
     blanket_and_scarves = (By.XPATH, '//*[@id="root"]/div/div[3]/div[3]/div[2]/div[2]/div[4]/div[2]/div[1]/div/div[2]/div/span')
     ice_cream_counter = (By.CLASS_NAME, "counter-plus")
     taxi_search_button = (By.CLASS_NAME, "smart-button-main")
-    modal_taxi = (By.CLASS_NAME, " order - header - title")  # cambiar a Class name
+    modal_taxi = (By.CLASS_NAME, "order - header - title")  # cambiar a Class name
 
     def __init__(self, driver):
         self.driver = driver
@@ -275,9 +275,9 @@ class TestUrbanRoutes:
 
         # Recuperar el código de confirmación del teléfono
         routes_page.the_next_button()
-        self.driver.implicitly_wait(30)  # cambio del timeslep
+        self.driver.implicitly_wait(50)  # cambio del timeslep
         routes_page.code_number()
-        self.driver.implicitly_wait(30)  # cambio del timeslep
+        self.driver.implicitly_wait(50)  # cambio del timeslep
         routes_page.send_cell_info()
         self.driver.implicitly_wait(50)  # cambio del timeslep
 
