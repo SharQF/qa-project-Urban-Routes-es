@@ -218,6 +218,7 @@ class UrbanRoutesPage:
         return self.driver.find_element(*self.ice_cream_counter).get_property('value')
 
     def search_taxi(self):
+        self.driver.implicitly_wait(20)
         self.driver.find_element(*self.taxi_search_button).click()
 
     def get_taxi(self):
@@ -284,7 +285,7 @@ class TestUrbanRoutes:
         # Agregar una tarjeta de crédito
         self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.click_card()
-        self.driver.implicitly_wait(20) # cambio del timeslep
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.add_card()
         self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.close_window()
@@ -302,18 +303,17 @@ class TestUrbanRoutes:
         assert routes_page.get_blanket_and_scarves() == routes_page.request_blanket_and_tissues()  # agregar assert
 
         # Pedir 2 helados
-        self.driver.implicitly_wait(20) # cambio del timeslep
+        self.driver.implicitly_wait(20)  # cambio del timeslep
         routes_page.request_ice_cream()
         assert routes_page.get_ice_cream() == routes_page.request_ice_cream()  # agregar Assert
 
         # Buscar un taxi
-        self.driver.implicitly_wait(20)  # cambio del timeslep
+        self.driver.implicitly_wait(50)  # cambio del timeslep
         routes_page.search_taxi()
 
         # Esperar a que aparezca la información del conductor en el modal
-        self.driver.implicitly_wait(120) # aumentar tiempo
+        self.driver.implicitly_wait(50)  # aumentar tiempo
         routes_page.wait_for_driver_info()
-        self.driver.implicitly_wait(120)
 
     @classmethod
     def teardown_class(cls):
